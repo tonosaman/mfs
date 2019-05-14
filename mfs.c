@@ -56,7 +56,11 @@ static int mfs_readdir(struct file *filp, void *dirent, filldir_t filldir)
 #else
 	pos = filp->f_pos;
 #endif
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 19, 0)
+	inode = filp->f_path.dentry->d_inode;
+#else
 	inode = filp->f_dentry->d_inode;
+#endif
 	sb = inode->i_sb;
 
 	printk(KERN_INFO "[mfs] Got pos: %lu\n", pos);
